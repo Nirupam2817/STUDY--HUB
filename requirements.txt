@@ -1,1 +1,2 @@
 Flask>=3.0,<4.0\nWerkzeug>=3.0,<4.0\ngunicorn>=21.2\n
+gunicorn
