@@ -8,7 +8,7 @@ UPLOADS = os.path.join(BASE, "uploads")
 DB_PATH = os.path.join(BASE, "studyhub.db")
 ALLOWED = {"pdf", "doc", "docx", "ppt", "pptx", "txt"}
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 app.secret_key = os.environ.get("SECRET_KEY", "replace-this-before-production")
 app.config["UPLOAD_FOLDER"] = UPLOADS
 app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024
