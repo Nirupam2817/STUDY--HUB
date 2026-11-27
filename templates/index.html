@@ -4,542 +4,528 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Study Hub | Learn Together</title>
-
+    <title>Study Hub | Learn. Share. Grow.</title>
+    <meta name="description" content="Study Hub - A student-powered library of engineering and IT study materials.">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-<div class="page-glow glow-one"></div>
-<div class="page-glow glow-two"></div>
-
-<!-- NAVBAR -->
 <header class="navbar">
-    <div class="nav-container">
+    <a href="/" class="brand">
+        <div class="brand-logo">S<span>H</span></div>
+        <div class="brand-text">
+            <strong>STUDY<span>HUB</span></strong>
+            <small>YOUR KNOWLEDGE SPACE</small>
+        </div>
+    </a>
 
-        <a href="/" class="brand">
-            <span class="brand-symbol">S</span>
-            <span class="brand-name">Study<span>Hub</span></span>
-        </a>
+    <nav class="nav-links">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#library" class="nav-link">Library</a>
+        <a href="#upload" class="nav-link">Contribute</a>
+    </nav>
 
-        <nav class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#library">Library</a>
-            <a href="#upload">Contribute</a>
-        </nav>
-
-        <a href="#upload" class="nav-button">
-            Share Material <span>↗</span>
-        </a>
-
-    </div>
+    <a href="#library" class="nav-cta">
+        Explore Library <span>↗</span>
+    </a>
 </header>
 
 
+<main>
+
 <!-- HERO -->
-<main id="home">
+<section class="hero" id="home">
 
-    <section class="hero">
-        <div class="hero-container">
+    <div class="hero-content">
 
-            <div class="hero-left">
+        <div class="hero-tag">
+            <span class="pulse"></span>
+            A COMMUNITY FOR STUDENTS
+        </div>
 
-                <div class="hero-badge">
-                    <span class="status-dot"></span>
-                    A COMMUNITY FOR LEARNING
+        <h1>
+            Learn smarter.<br>
+            <span>Grow together.</span>
+        </h1>
+
+        <p class="hero-description">
+            Your digital space for engineering notes, IT resources,
+            study materials and knowledge shared by students.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#library" class="btn-primary">
+                Explore Materials <span>→</span>
+            </a>
+
+            <a href="#upload" class="btn-outline">
+                Share Your Notes
+            </a>
+        </div>
+
+        <div class="hero-trust">
+            <div class="trust-icon">✦</div>
+            <span>Made for students. Built for learning.</span>
+        </div>
+
+    </div>
+
+    <div class="hero-visual">
+
+        <div class="visual-glow"></div>
+
+        <div class="orbit orbit-1"></div>
+        <div class="orbit orbit-2"></div>
+
+        <div class="floating-label label-top">
+            <span class="label-icon">✦</span>
+            <div>
+                <strong>Knowledge shared</strong>
+                <small>Learning made easier</small>
+            </div>
+        </div>
+
+        <div class="study-card">
+
+            <div class="study-card-top">
+                <div class="window-dots">
+                    <i></i><i></i><i></i>
+                </div>
+                <span>STUDY SPACE</span>
+            </div>
+
+            <div class="study-card-heading">
+                <span class="small-label">YOUR LEARNING JOURNEY</span>
+                <h3>Explore.<br>Understand.<br><span>Achieve.</span></h3>
+            </div>
+
+            <div class="preview-list">
+
+                <div class="preview-item">
+                    <div class="preview-icon green-icon">PDF</div>
+                    <div class="preview-info">
+                        <strong>Engineering Notes</strong>
+                        <small>Learning resources</small>
+                    </div>
+                    <span class="preview-arrow">↗</span>
                 </div>
 
-                <h1>
-                    Your knowledge.<br>
-                    <span>Our growth.</span>
-                </h1>
-
-                <p class="hero-description">
-                    Find the notes you need. Share what you know.
-                    Learn together with a student-powered library
-                    built to make studying easier.
-                </p>
-
-                <div class="hero-buttons">
-                    <a href="#library" class="button-primary">
-                        Explore Library <span>↓</span>
-                    </a>
-
-                    <a href="#upload" class="button-secondary">
-                        Share your notes
-                    </a>
+                <div class="preview-item">
+                    <div class="preview-icon soft-icon">IT</div>
+                    <div class="preview-info">
+                        <strong>Computer Science</strong>
+                        <small>Programming & technology</small>
+                    </div>
+                    <span class="preview-arrow">↗</span>
                 </div>
 
-                <div class="hero-proof">
-                    <div class="proof-icon">✦</div>
-                    <p>
-                        <strong>Built for students</strong>
-                        <span>Resources made to help you learn</span>
-                    </p>
+                <div class="preview-item">
+                    <div class="preview-icon gold-icon">DOC</div>
+                    <div class="preview-info">
+                        <strong>Exam Preparation</strong>
+                        <small>Notes & question papers</small>
+                    </div>
+                    <span class="preview-arrow">↗</span>
                 </div>
 
             </div>
 
-
-            <div class="hero-right">
-
-                <div class="hero-window">
-
-                    <div class="window-header">
-                        <div class="window-controls">
-                            <span></span><span></span><span></span>
-                        </div>
-
-                        <span class="window-label">STUDY HUB / LIBRARY</span>
-                    </div>
-
-                    <div class="window-body">
-
-                        <div class="mini-welcome">
-                            <div>
-                                <span class="mini-label">YOUR LEARNING SPACE</span>
-                                <h3>Knowledge starts here.</h3>
-                            </div>
-                            <div class="mini-book">✦</div>
-                        </div>
-
-                        <div class="mini-stat-grid">
-
-                            <div class="mini-stat">
-                                <span class="mini-stat-icon">▤</span>
-                                <span class="mini-stat-number">{{ count }}</span>
-                                <span class="mini-stat-label">Resources</span>
-                            </div>
-
-                            <div class="mini-stat">
-                                <span class="mini-stat-icon">⌘</span>
-                                <span class="mini-stat-number">{{ subjects|length }}</span>
-                                <span class="mini-stat-label">Subjects</span>
-                            </div>
-
-                        </div>
-
-                        <div class="mini-list-heading">
-                            <span>RECENT MATERIALS</span>
-                            <span class="mini-list-dot">●</span>
-                        </div>
-
-                        <div class="mini-resource">
-                            <div class="mini-file pdf">PDF</div>
-                            <div>
-                                <strong>Study materials</strong>
-                                <small>Notes & resources</small>
-                            </div>
-                            <span class="mini-arrow">↗</span>
-                        </div>
-
-                        <div class="mini-resource">
-                            <div class="mini-file doc">DOC</div>
-                            <div>
-                                <strong>Learning resources</strong>
-                                <small>Shared by students</small>
-                            </div>
-                            <span class="mini-arrow">↗</span>
-                        </div>
-
-                    </div>
-
+            <div class="preview-bottom">
+                <div class="preview-progress">
+                    <span></span>
                 </div>
-
-                <div class="hero-float-card">
-                    <span class="float-star">✦</span>
-                    <div>
-                        <strong>Learn. Share. Repeat.</strong>
-                        <span>Make learning collaborative.</span>
-                    </div>
-                </div>
-
+                <small>Keep learning, keep growing.</small>
             </div>
 
         </div>
-    </section>
 
-
-    <!-- STATS -->
-    <section class="stats">
-        <div class="stats-container">
-
-            <div class="stat">
-                <span class="stat-number">{{ count }}</span>
-                <span class="stat-label">Available resources</span>
+        <div class="floating-label label-bottom">
+            <div class="floating-star">✦</div>
+            <div>
+                <strong>One hub.</strong>
+                <small>Endless possibilities.</small>
             </div>
-
-            <div class="stat-divider"></div>
-
-            <div class="stat">
-                <span class="stat-number">{{ subjects|length }}</span>
-                <span class="stat-label">Subjects covered</span>
-            </div>
-
-            <div class="stat-divider"></div>
-
-            <div class="stat">
-                <span class="stat-number">∞</span>
-                <span class="stat-label">Learning possibilities</span>
-            </div>
-
         </div>
-    </section>
+
+    </div>
+
+</section>
 
 
-    <!-- LIBRARY -->
-    <section class="library-section" id="library">
+<!-- STATS -->
+<section class="stats">
 
-        <div class="section-container">
+    <div class="stat">
+        <div class="stat-symbol">▤</div>
+        <div>
+            <h3>{{ count }}</h3>
+            <p>Study Materials</p>
+        </div>
+    </div>
 
-            <div class="section-top">
+    <div class="stat">
+        <div class="stat-symbol">◈</div>
+        <div>
+            <h3>{{ subjects|length }}</h3>
+            <p>Subjects</p>
+        </div>
+    </div>
 
-                <div class="section-heading">
-                    <div class="section-label">THE RESOURCE LIBRARY</div>
-                    <h2>Explore your <span>library.</span></h2>
-                    <p>
-                        Everything from class notes to presentations,
-                        all in one place.
-                    </p>
-                </div>
+    <div class="stat">
+        <div class="stat-symbol">↗</div>
+        <div>
+            <h3>Free</h3>
+            <p>Student Access</p>
+        </div>
+    </div>
 
-                <div class="library-count">
-                    <span class="count-circle">{{ count }}</span>
-                    <span>materials available</span>
-                </div>
+</section>
 
+
+<!-- LIBRARY -->
+<section class="library-section" id="library">
+
+    <div class="section-heading">
+
+        <div>
+            <div class="section-eyebrow">
+                <span></span> THE RESOURCE LIBRARY
             </div>
 
+            <h2>
+                Find your next<br>
+                <span>learning resource.</span>
+            </h2>
 
-            <!-- SEARCH -->
-            <form action="/" method="GET" class="search-panel">
+            <p>
+                Discover notes, PDFs and resources to help you
+                study, prepare and succeed.
+            </p>
+        </div>
 
-                <div class="search-input-wrap">
+        <a href="#upload" class="text-link">
+            Share a resource <span>↗</span>
+        </a>
 
-                    <span class="search-icon">⌕</span>
-
-                    <input
-                        type="search"
-                        name="q"
-                        value="{{ q }}"
-                        placeholder="Search by title, subject or keyword..."
-                    >
-
-                </div>
-
-                <div class="filter-wrap">
-
-                    <select name="subject" aria-label="Filter by subject">
-
-                        <option value="">All subjects</option>
-
-                        {% for s in subjects %}
-                            <option value="{{ s.subject }}"
-                                {% if selected_subject == s.subject %}
-                                    selected
-                                {% endif %}>
-                                {{ s.subject }}
-                            </option>
-                        {% endfor %}
-
-                    </select>
-
-                </div>
-
-                <button type="submit" class="search-button">
-                    Search <span>→</span>
-                </button>
-
-                {% if q or selected_subject %}
-                    <a href="/" class="reset-link">Clear</a>
-                {% endif %}
-
-            </form>
+    </div>
 
 
-            <!-- MATERIAL GRID -->
-            <div class="materials-grid">
+    <!-- SEARCH -->
+    <form method="GET" action="/" class="search-box">
 
-                {% for m in materials %}
+        <div class="search-input-wrap">
+            <span class="search-symbol">⌕</span>
 
-                    <article class="resource-card">
+            <input
+                type="text"
+                name="q"
+                placeholder="Search notes, subjects or materials..."
+                value="{{ q }}"
+            >
+        </div>
 
-                        <div class="card-top">
+        <div class="filter-wrap">
 
-                            <div class="file-icon">
-                                <div class="file-icon-fold"></div>
-                                <span>FILE</span>
-                            </div>
+            <select name="subject">
+                <option value="">All Subjects</option>
 
-                            <span class="resource-tag">
-                                {{ m.subject }}
-                            </span>
-
-                        </div>
-
-
-                        <div class="card-content">
-
-                            <h3>{{ m.title }}</h3>
-
-                            {% if m.description %}
-                                <p class="resource-description">
-                                    {{ m.description }}
-                                </p>
-                            {% else %}
-                                <p class="resource-description">
-                                    Study material shared with the community.
-                                </p>
-                            {% endif %}
-
-                            <div class="file-name">
-                                <span>▤</span>
-                                {{ m.original_name }}
-                            </div>
-
-                        </div>
-
-
-                        <div class="card-footer">
-
-                            <div class="uploader">
-                                <div class="uploader-avatar">
-                                    {% if m.uploaded_by %}
-                                        {{ m.uploaded_by[0]|upper }}
-                                    {% else %}
-                                        S
-                                    {% endif %}
-                                </div>
-
-                                <div class="uploader-info">
-                                    <span class="uploaded-label">SHARED BY</span>
-
-                                    <strong>
-                                        {{ m.uploaded_by if m.uploaded_by else "Student" }}
-                                    </strong>
-                                </div>
-                            </div>
-
-                            <a href="{{ url_for('download', item_id=m.id) }}"
-                               class="download-button"
-                               title="Download this material">
-                                <span>↓</span>
-                            </a>
-
-                        </div>
-
-
-                        <!-- DELETE -->
-                        <div class="delete-area">
-
-                            <form
-                                action="{{ url_for('delete_material', item_id=m.id) }}"
-                                method="POST"
-                                class="delete-form"
-                                onsubmit="return confirm('Are you sure you want to permanently delete this material?');">
-
-                                <input
-                                    type="password"
-                                    name="password"
-                                    placeholder="Admin password"
-                                    required
-                                    autocomplete="off"
-                                    aria-label="Administrator delete password"
-                                >
-
-                                <button type="submit" class="delete-button">
-                                    <span>×</span> Delete
-                                </button>
-
-                            </form>
-
-                            <span class="delete-caption">
-                                Administrator access only
-                            </span>
-
-                        </div>
-
-                    </article>
-
-                {% else %}
-
-                    <div class="empty-state">
-
-                        <div class="empty-illustration">⌕</div>
-
-                        <h3>No materials found</h3>
-
-                        <p>
-                            Try another search or subject.
-                            You can also contribute a new material.
-                        </p>
-
-                        <a href="#upload" class="button-primary">
-                            Share a resource
-                        </a>
-
-                    </div>
-
+                {% for subject in subjects %}
+                <option value="{{ subject }}"
+                    {% if selected_subject == subject %}selected{% endif %}>
+                    {{ subject }}
+                </option>
                 {% endfor %}
 
-            </div>
+            </select>
 
         </div>
-    </section>
+
+        <button type="submit" class="search-button">
+            Search
+        </button>
+
+        <a href="/" class="reset-button">Reset</a>
+
+    </form>
 
 
-    <!-- UPLOAD -->
-    <section class="upload-section" id="upload">
+    <!-- MATERIAL COUNT -->
+    <div class="library-toolbar">
+        <div>
+            <span class="toolbar-title">Available resources</span>
+            <span class="resource-count">{{ materials|length }} found</span>
+        </div>
 
-        <div class="upload-container">
+        <span class="library-status">
+            <span class="status-dot"></span> Library
+        </span>
+    </div>
 
-            <div class="upload-left">
 
-                <div class="section-label">CONTRIBUTE TO STUDY HUB</div>
+    <!-- MATERIAL CARDS -->
+    <div class="materials-grid">
 
-                <h2>
-                    Share knowledge.<br>
-                    <span>Make a difference.</span>
-                </h2>
+        {% for m in materials %}
 
-                <p>
-                    Have useful notes or materials?
-                    Share them with other students and
-                    make learning a little easier for everyone.
+        <article class="material-card">
+
+            <div class="card-top">
+
+                <div class="pdf-icon">
+                    <span>PDF</span>
+                </div>
+
+                <span class="subject-tag">
+                    {{ m.subject }}
+                </span>
+
+            </div>
+
+            <div class="card-content">
+
+                <h3>{{ m.title }}</h3>
+
+                <p class="material-description">
+                    {{ m.description or "Study resource shared with the Study Hub community." }}
                 </p>
 
-                <div class="upload-benefits">
-
-                    <div class="benefit">
-                        <span class="benefit-check">✓</span>
-                        <span>Share useful academic resources</span>
-                    </div>
-
-                    <div class="benefit">
-                        <span class="benefit-check">✓</span>
-                        <span>Support other students</span>
-                    </div>
-
-                    <div class="benefit">
-                        <span class="benefit-check">✓</span>
-                        <span>Build a shared learning library</span>
-                    </div>
-
+                <div class="file-name">
+                    <span class="file-symbol">▤</span>
+                    <span>{{ m.original_name }}</span>
                 </div>
 
             </div>
 
+            <div class="card-footer">
 
-            <div class="upload-panel">
+                <div class="uploader">
+                    <div class="avatar">
+                        {{ (m.uploaded_by or "S")[0]|upper }}
+                    </div>
 
-                <div class="upload-panel-heading">
-                    <div class="upload-symbol">↑</div>
-
-                    <div>
-                        <h3>Upload a material</h3>
-                        <p>Fill in the details below.</p>
+                    <div class="uploader-info">
+                        <small>Shared by</small>
+                        <strong>{{ m.uploaded_by or "Student" }}</strong>
                     </div>
                 </div>
 
+                <a href="{{ url_for('download', item_id=m.id) }}"
+                   class="download-btn">
+                    Download <span>↓</span>
+                </a>
 
-                <form action="/upload"
-                      method="POST"
-                      enctype="multipart/form-data"
-                      class="upload-form">
-
-                    <div class="form-row">
-
-                        <div class="form-group">
-                            <label for="title">Material title <span>*</span></label>
-
-                            <input
-                                type="text"
-                                name="title"
-                                id="title"
-                                placeholder="e.g. Python Programming Notes"
-                                required
-                            >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="subject">Subject <span>*</span></label>
-
-                            <input
-                                type="text"
-                                name="subject"
-                                id="subject"
-                                placeholder="e.g. Python"
-                                required
-                            >
-                        </div>
-
-                    </div>
+            </div>
 
 
-                    <div class="form-row">
+            <!-- PASSWORD PROTECTED DELETE -->
+            <details class="delete-details">
+                <summary>Manage resource</summary>
 
-                        <div class="form-group">
-                            <label for="uploaded_by">Your name</label>
+                <form method="POST"
+                      action="{{ url_for('delete_material', item_id=m.id) }}"
+                      class="delete-form"
+                      onsubmit="return confirm('Are you sure you want to delete this material?');">
 
-                            <input
-                                type="text"
-                                name="uploaded_by"
-                                id="uploaded_by"
-                                placeholder="Your name"
-                            >
-                        </div>
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Delete password"
+                        required
+                    >
 
-                        <div class="form-group">
-                            <label for="file">Choose file <span>*</span></label>
-
-                            <input
-                                type="file"
-                                name="file"
-                                id="file"
-                                accept=".pdf,.doc,.docx,.ppt,.pptx,.txt"
-                                required
-                            >
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="description">Description</label>
-
-                        <textarea
-                            name="description"
-                            id="description"
-                            rows="3"
-                            placeholder="What is this material about?"
-                        ></textarea>
-                    </div>
-
-
-                    <div class="upload-file-info">
-                        <span>ⓘ</span>
-                        Supported: PDF, DOC, DOCX, PPT, PPTX, TXT · 20 MB max
-                    </div>
-
-
-                    <button type="submit" class="submit-upload">
-                        Upload material <span>↗</span>
+                    <button type="submit" class="delete-button">
+                        Delete material
                     </button>
 
                 </form>
+            </details>
+
+        </article>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">▤</div>
+
+            <h3>No materials found</h3>
+
+            <p>
+                Try another search or subject, or contribute
+                a new study material.
+            </p>
+
+            <a href="#upload" class="btn-primary">
+                Upload a resource →
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- UPLOAD -->
+<section class="upload-section" id="upload">
+
+    <div class="upload-layout">
+
+        <div class="upload-info">
+
+            <div class="section-eyebrow">
+                <span></span> SHARE YOUR KNOWLEDGE
+            </div>
+
+            <h2>
+                Your notes could<br>
+                <span>help someone.</span>
+            </h2>
+
+            <p>
+                Share your study materials with fellow students.
+                Every resource you contribute can help someone
+                understand a topic better.
+            </p>
+
+            <div class="upload-benefits">
+
+                <div class="benefit">
+                    <span class="benefit-icon">✓</span>
+                    <div>
+                        <strong>Share knowledge</strong>
+                        <small>Help other students learn.</small>
+                    </div>
+                </div>
+
+                <div class="benefit">
+                    <span class="benefit-icon">✓</span>
+                    <div>
+                        <strong>Organized resources</strong>
+                        <small>Subject-based study materials.</small>
+                    </div>
+                </div>
+
+                <div class="benefit">
+                    <span class="benefit-icon">✓</span>
+                    <div>
+                        <strong>Student community</strong>
+                        <small>Learn and grow together.</small>
+                    </div>
+                </div>
 
             </div>
 
         </div>
 
-    </section>
+
+        <div class="upload-card">
+
+            <div class="upload-card-heading">
+                <div class="upload-heading-icon">↑</div>
+
+                <div>
+                    <h3>Contribute material</h3>
+                    <p>Fill in the details below.</p>
+                </div>
+            </div>
+
+
+            <form action="/upload" method="POST" enctype="multipart/form-data"
+                  class="upload-form">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="title">Material title</label>
+
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            placeholder="e.g. Python Programming Notes"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+
+                        <input
+                            type="text"
+                            id="subject"
+                            name="subject"
+                            placeholder="e.g. Python"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label for="uploaded_by">Your name</label>
+
+                    <input
+                        type="text"
+                        id="uploaded_by"
+                        name="uploaded_by"
+                        placeholder="Enter your name"
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="3"
+                        placeholder="Describe this material..."
+                    ></textarea>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="file">Select PDF</label>
+
+                    <input
+                        type="file"
+                        id="file"
+                        name="file"
+                        accept=".pdf,application/pdf"
+                        required
+                    >
+
+                    <small class="file-help">
+                        PDF files only.
+                    </small>
+                </div>
+
+
+                <button type="submit" class="upload-submit">
+                    Upload material <span>↑</span>
+                </button>
+
+                <p class="form-note">
+                    By uploading, you agree to share this resource
+                    for educational purposes.
+                </p>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
 
 </main>
 
@@ -547,22 +533,27 @@
 <!-- FOOTER -->
 <footer class="footer">
 
-    <div class="footer-container">
+    <div class="footer-main">
 
         <a href="/" class="brand footer-brand">
-            <span class="brand-symbol">S</span>
-            <span class="brand-name">Study<span>Hub</span></span>
+            <div class="brand-logo">S<span>H</span></div>
+
+            <div class="brand-text">
+                <strong>STUDY<span>HUB</span></strong>
+                <small>YOUR KNOWLEDGE SPACE</small>
+            </div>
         </a>
 
         <p>
-            A shared space for knowledge, notes and growth.
+            A shared space for knowledge, learning and
+            student collaboration.
         </p>
 
-        <div class="footer-bottom">
-            <span>© 2026 Study Hub</span>
-            <span>Made for learners.</span>
-        </div>
+    </div>
 
+    <div class="footer-bottom">
+        <span>© 2026 Study Hub</span>
+        <span>Learn. Share. Grow.</span>
     </div>
 
 </footer>
