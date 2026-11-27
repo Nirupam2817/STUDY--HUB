@@ -1,119 +1,113 @@
+
 import os
 import sqlite3
 import uuid
-from datetime import datetime
+import hmac
 
 from flask import (
     Flask, render_template, request, redirect,
-    url_for, flash, send_from_directory, abort
+    url_for, send_from_directory, abort
 )
 from werkzeug.utils import secure_filename
 
+
 # ---------------- CONFIGURATION ----------------
 
-BASE = os.path.abspath(os.path.dirname(__file__))
-TEMPLATE_DIR = os.path.join(BASE, "templates")
+BASE = os.path.dirname(os.path.abspath(__file__))
 UPLOADS = os.path.join(BASE, "uploads")
 DB_PATH = os.path.join(BASE, "studyhub.db")
 
+os.makedirs(UPLOADS, exist_ok=True)
+
 ALLOWED = {"pdf", "doc", "docx", "ppt", "pptx", "txt"}
 
-app = Flask(
-    __name__,
-    template_folder=TEMPLATE_DIR
-)
-
-app.secret_key = os.environ.get("SECRET_KEY", "study-hub-demo-key")
-
-app.config["UPLOAD_FOLDER"] = UPLOADS
-app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024
-
-os.makedirs(UPLOADS, exist_ok=True)
-os.makedirs(TEMPLATE_DIR, exist_ok=True)
+app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "studyhub-secret-key")
+app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024  # 20 MB
 
 
 # ---------------- DATABASE ----------------
 
-def connect():
-    connection = sqlite3.connect(DB_PATH)
-    connection.row_factory = sqlite3.Row
-    return connection
+def get_db():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 
-def initialize():
-    with connect() as connection:
-        connection.execute("""
-            CREATE TABLE IF NOT EXISTS materials (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                title TEXT NOT NULL,
-                subject TEXT NOT NULL,
-                description TEXT,
-                original_name TEXT NOT NULL,
-                stored_name TEXT NOT NULL UNIQUE,
-                uploaded_by TEXT NOT NULL,
-                uploaded_at TEXT NOT NULL
-            )
-        """)
+def init_db():
+    conn = get_db()
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS materials (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            subject TEXT NOT NULL,
+            description TEXT,
+            original_name TEXT NOT NULL,
+            stored_name TEXT UNIQUE NOT NULL,
+            uploaded_by TEXT,
+            uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    conn.commit()
+    conn.close()
 
 
-# ---------------- HOME PAGE ----------------
+init_db()
 
-@app.route("/", methods=["GET"])
+
+# ---------------- HOME / SEARCH ----------------
+
+@app.route("/")
 def home():
-    search = request.args.get("q", "").strip()
-    subject_filter = request.args.get("subject", "").strip()
+    q = request.args.get("q", "").strip()
+    selected_subject = request.args.get("subject", "").strip()
 
-    sql = "SELECT * FROM materials WHERE 1=1"
-    parameters = []
+    conn = get_db()
 
-    if search:
-        sql += """
+    query = "SELECT * FROM materials WHERE 1=1"
+    params = []
+
+    if q:
+        query += """
             AND (
                 title LIKE ?
                 OR subject LIKE ?
                 OR description LIKE ?
-                OR uploaded_by LIKE ?
+                OR original_name LIKE ?
             )
         """
-        term = f"%{search}%"
-        parameters.extend([term, term, term, term])
+        search = f"%{q}%"
+        params.extend([search, search, search, search])
 
-    if subject_filter:
-        sql += " AND subject = ?"
-        parameters.append(subject_filter)
+    if selected_subject:
+        query += " AND subject = ?"
+        params.append(selected_subject)
 
-    sql += " ORDER BY id DESC"
+    query += " ORDER BY uploaded_at DESC"
 
-    with connect() as connection:
-        materials = connection.execute(
-            sql, parameters
-        ).fetchall()
+    materials = conn.execute(query, params).fetchall()
 
-        subjects = [
-            row["subject"]
-            for row in connection.execute(
-                "SELECT DISTINCT subject FROM materials ORDER BY subject"
-            ).fetchall()
-        ]
+    subjects = conn.execute("""
+        SELECT DISTINCT subject
+        FROM materials
+        ORDER BY subject
+    """).fetchall()
 
-        count = connection.execute(
-            "SELECT COUNT(*) FROM materials"
-        ).fetchone()[0]
+    count = conn.execute(
+        "SELECT COUNT(*) FROM materials"
+    ).fetchone()[0]
 
-    # Verify that the template is available
-    if not os.path.isfile(os.path.join(TEMPLATE_DIR, "index.html")):
-        return (
-            "Study Hub error: templates/index.html is missing from the deployed project.",
-            500
-        )
+    conn.close()
 
     return render_template(
         "index.html",
         materials=materials,
         subjects=subjects,
         count=count,
-        q=search,
-        selected_subject=subject_filter
+        q=q,
+        selected_subject=selected_subject
     )
 
 
@@ -123,78 +117,79 @@ def home():
 def upload():
     title = request.form.get("title", "").strip()
     subject = request.form.get("subject", "").strip()
-    author = request.form.get("uploaded_by", "").strip()
+    uploaded_by = request.form.get("uploaded_by", "").strip()
     description = request.form.get("description", "").strip()
     file = request.files.get("file")
 
-    if not title or not subject or not author or not file or not file.filename:
-        flash("Please complete all required fields.", "error")
-        return redirect(url_for("home") + "#upload")
+    if not title or not subject or not file:
+        return "Please fill in the required fields.", 400
 
-    extension = file.filename.rsplit(".", 1)[-1].lower()
-
-    if "." not in file.filename or extension not in ALLOWED:
-        flash("Only PDF, DOC, DOCX, PPT, PPTX and TXT files are allowed.", "error")
-        return redirect(url_for("home") + "#upload")
+    if not file.filename:
+        return "Please select a file.", 400
 
     original_name = secure_filename(file.filename)
 
-    if not original_name:
-        flash("Invalid file name.", "error")
-        return redirect(url_for("home") + "#upload")
+    if not original_name or "." not in original_name:
+        return "Invalid file name.", 400
 
-    stored_name = f"{uuid.uuid4().hex}.{extension}"
+    extension = original_name.rsplit(".", 1)[1].lower()
+
+    if extension not in ALLOWED:
+        return "File type not allowed.", 400
+
+    stored_name = str(uuid.uuid4()) + "." + extension
     file_path = os.path.join(UPLOADS, stored_name)
 
+    file.save(file_path)
+
+    conn = get_db()
+
     try:
-        file.save(file_path)
+        conn.execute("""
+            INSERT INTO materials (
+                title, subject, description,
+                original_name, stored_name, uploaded_by
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            title,
+            subject,
+            description,
+            original_name,
+            stored_name,
+            uploaded_by
+        ))
 
-        with connect() as connection:
-            connection.execute("""
-                INSERT INTO materials (
-                    title, subject, description,
-                    original_name, stored_name,
-                    uploaded_by, uploaded_at
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, (
-                title,
-                subject,
-                description,
-                original_name,
-                stored_name,
-                author,
-                datetime.now().strftime("%d %b %Y")
-            ))
-
-        flash("Your material has been uploaded to Study Hub!", "success")
+        conn.commit()
 
     except Exception:
+        conn.close()
+
         if os.path.exists(file_path):
             os.remove(file_path)
 
-        flash("Upload failed. Please try again.", "error")
+        return "Upload failed. Please try again.", 500
 
-    return redirect(url_for("home") + "#library")
+    conn.close()
+
+    return redirect(url_for("home"))
 
 
 # ---------------- DOWNLOAD ----------------
 
-@app.route("/download/<int:item_id>", methods=["GET"])
+@app.route("/download/<int:item_id>")
 def download(item_id):
-    with connect() as connection:
-        item = connection.execute(
-            "SELECT * FROM materials WHERE id = ?",
-            (item_id,)
-        ).fetchone()
+    conn = get_db()
+
+    item = conn.execute(
+        "SELECT stored_name, original_name FROM materials WHERE id = ?",
+        (item_id,)
+    ).fetchone()
+
+    conn.close()
 
     if item is None:
         abort(404)
-
-    file_path = os.path.join(UPLOADS, item["stored_name"])
-
-    if not os.path.isfile(file_path):
-        return "The uploaded file is no longer available.", 404
 
     return send_from_directory(
         UPLOADS,
@@ -204,30 +199,72 @@ def download(item_id):
     )
 
 
+# ---------------- DELETE ----------------
+
+@app.route("/delete/<int:item_id>", methods=["POST"])
+def delete_material(item_id):
+    password = request.form.get("password", "")
+    correct_password = os.environ.get("DELETE_PASSWORD", "")
+
+    if not correct_password:
+        return "Delete password is not configured.", 500
+
+    if not hmac.compare_digest(password, correct_password):
+        return "Incorrect password. File was not deleted.", 403
+
+    conn = get_db()
+
+    item = conn.execute(
+        "SELECT * FROM materials WHERE id = ?",
+        (item_id,)
+    ).fetchone()
+
+    if item is None:
+        conn.close()
+        abort(404)
+
+    stored_name = item["stored_name"]
+
+    # Prevent accidental path traversal
+    if stored_name != os.path.basename(stored_name):
+        conn.close()
+        abort(400)
+
+    file_path = os.path.join(UPLOADS, stored_name)
+
+    # Delete the physical file first.
+    if os.path.isfile(file_path):
+        try:
+            os.remove(file_path)
+        except OSError:
+            conn.close()
+            return "Could not delete the uploaded file.", 500
+
+    # Delete the database record.
+    conn.execute(
+        "DELETE FROM materials WHERE id = ?",
+        (item_id,)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for("home"))
+
+
 # ---------------- ERROR HANDLERS ----------------
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return "Page not found.", 404
+    return render_template("404.html"), 404
 
 
 @app.errorhandler(413)
 def file_too_large(error):
-    return "File too large. Maximum upload size is 20 MB.", 413
+    return "File is too large. Maximum size is 20 MB.", 413
 
 
-@app.errorhandler(500)
-def internal_error(error):
-    return "An internal error occurred. Please try again.", 500
-
-
-# ---------------- STARTUP ----------------
-
-initialize()
+# ---------------- RUN ----------------
 
 if __name__ == "__main__":
-    app.run(
-        host="0.0.0.0",
-        port=int(os.environ.get("PORT", 5000)),
-        debug=False
-    )
+    app.run(debug=True)
